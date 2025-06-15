@@ -1,0 +1,15 @@
+{
+  "billable": true,
+  "customAttributes": [
+    {
+      "name": "race",
+      "namespace": "user_info",
+      "value": "Dollar"
+    }
+  ],
+  "description": "This is a automatic test",
+  "end": "2025-06-13T11:30:00Z",
+  "projectId": "684c4844b3f70670b2238cd0",
+  "start": "2025-06-13T10:30:00Z",
+  "type": "REGULAR"
+}
