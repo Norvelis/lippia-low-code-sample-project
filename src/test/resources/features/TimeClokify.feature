@@ -6,11 +6,11 @@ Feature: Time entry
     And header Content-Type = application/json
     And header x-api-key = $(env.xApiKey)
 
-    # en este escenario no esta funcionando al variabilizar el userId desde el Lippia config
+    #en este escenario no esta funcionando al variabilizar el userId desde el Lippia config
   @TimeSearch @OK
   Scenario: Query hours by user
-    Given call features/WorkspaceClockify.feature@WorkspaceQuery
-    # no está trayendo las variables de workspaceId y userId del feature de workspace,en el endpoint
+    Given call WorkspaceClockify.feature@WorkspaceQuery
+    # no trae las variables de workspaceId y userId del feature de workspace,en el endpoint
     And endpoint /v1/workspaces/{{workspaceId}}/user/{{userId}}/time-entries
     When execute method GET
     * print response
