@@ -2,7 +2,6 @@
 Feature: Time entry
   Background:
     And base url $(env.base_url_clockify)
-    #llamar el content-type desde el header
     And header Content-Type = application/json
     And header x-api-key = $(env.xApiKey)
 
@@ -11,10 +10,9 @@ Feature: Time entry
     Given call WorkspaceClockify.feature@WorkspaceQuery
     And endpoint /v1/workspaces/{{workspaceId}}/user/{{userId}}/time-entries
     When execute method GET
-    * print response
     Then the status code should be 200
     * define timeEntryId = $.[0].id
-    * define workSpaceID = $.[0].workspaceId
+    #* define workSpaceID = $.[0].workspaceId
     And validate schema jsons/schemas/getHours.json
 
 
@@ -31,7 +29,7 @@ Feature: Time entry
   @UpdateTimeEntry @Ok
     Scenario Outline: Update time entry on workspace
     Given call TimeClockify.feature@TimeSearch
-    And endpoint /v1/workspaces/{{workSpaceID}}/time-entries/{{timeEntryId}}
+    And endpoint /v1/workspaces/{{workspaceId}}/time-entries/{{timeEntryId}}
     And set value <description> of key description in body jsons/bodies/updateTimeEntry.json
     And set value <start> of key start in body jsons/bodies/updateTimeEntry.json
     And set value <end> of key end in body jsons/bodies/updateTimeEntry.json
