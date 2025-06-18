@@ -6,22 +6,22 @@ Feature: Time entry
     And header Content-Type = application/json
     And header x-api-key = $(env.xApiKey)
 
-    #en este escenario no esta funcionando al variabilizar el userId desde el Lippia config
   @TimeSearch @OK
   Scenario: Query hours by user
     Given call WorkspaceClockify.feature@WorkspaceQuery
-    # no trae las variables de workspaceId y userId del feature de workspace,en el endpoint
     And endpoint /v1/workspaces/{{workspaceId}}/user/{{userId}}/time-entries
     When execute method GET
     * print response
     Then the status code should be 200
     * define timeEntryId = $.[0].id
+    * define workSpaceID = $.[0].workspaceId
     And validate schema jsons/schemas/getHours.json
 
 
   @AddNewTime
   Scenario: Add new time entry
-    Given endpoint /v1/workspaces/$(env.workspaceId)/time-entries
+    Given call WorkspaceClockify.feature@WorkspaceQuery
+    Given endpoint /v1/workspaces/{{workspaceId}}/time-entries
     And body jsons/bodies/addNewTime.json
     When execute method POST
     * print response
@@ -31,7 +31,7 @@ Feature: Time entry
   @UpdateTimeEntry @Ok
     Scenario Outline: Update time entry on workspace
     Given call TimeClockify.feature@TimeSearch
-    And endpoint /v1/workspaces/$(env.workspaceId)/time-entries/{{timeEntryId}}
+    And endpoint /v1/workspaces/{{workSpaceID}}/time-entries/{{timeEntryId}}
     And set value <description> of key description in body jsons/bodies/updateTimeEntry.json
     And set value <start> of key start in body jsons/bodies/updateTimeEntry.json
     And set value <end> of key end in body jsons/bodies/updateTimeEntry.json
@@ -50,7 +50,7 @@ Feature: Time entry
   @DeleteTimeEntry @Ok
     Scenario: Delete all time entries for user on workspace
     Given call TimeClockify.feature@TimeSearch
-    And endpoint /v1/workspaces/$(env.workspaceId)/time-entries/{{timeEntryId}}
+    And endpoint /v1/workspaces/{{workSpaceID}}/time-entries/{{timeEntryId}}
     When execute method DELETE
     * print response
     Then the status code should be 204
