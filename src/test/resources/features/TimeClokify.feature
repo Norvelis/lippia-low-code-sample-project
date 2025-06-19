@@ -10,6 +10,7 @@ Feature: Time entry
     Given call WorkspaceClockify.feature@WorkspaceQuery
     And endpoint /v1/workspaces/{{workspaceId}}/user/{{userId}}/time-entries
     When execute method GET
+    * print response
     Then the status code should be 200
     * define timeEntryId = $.[0].id
     #* define workSpaceID = $.[0].workspaceId
